@@ -22,7 +22,19 @@ struct stt
 
     ~stt () {};
 
+    stt (const stt <T, Sz> & arr)
+        {
+        for (int number = 0; number < arr.sz; number++)
+            data [number] = arr.data [number];
+        }
+
     T* Move (int);
+
+    stt <T, Sz> & operator = (const stt <T, Sz> & arr)
+        {
+        for (int number = 0; number < arr.sz; arr++)
+            data [number] = arr [number];
+        }
     };
 
 template <typename T, int Sz = 0>
@@ -53,6 +65,12 @@ struct dyn
         delete (data);
         }
 
+    dyn (const dyn <T, Sz> & arr)
+        {
+        for (int number = 0; number < arr.sz; number++)
+            data [number] = arr.data [number];
+        }
+
     T* Move (int szNew)
         {
         if (data == NULL)
@@ -70,15 +88,9 @@ struct dyn
         return data;
         }
 
-    dyn (const dyn <T, Sz> & )
-        {
-        
-        }
-        
     dyn <T, Sz> & operator = (const dyn <T, Sz> & arr)
         {
-        for (int number = 0; number < arr.sz; arr++)
-            {
+        for (int number = 0; number < arr.sz; number++)
             data [number] = arr [number];
         }
     };
@@ -103,6 +115,10 @@ class array_t : public Type <T, Sz>
 
         return this->data [num];
         }
+
+    array_t (const array_t & arr) :
+        Type ()
+        {}
     };
 
 //{///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

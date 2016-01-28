@@ -91,7 +91,7 @@ struct dyn
     dyn <T, Sz> & operator = (const dyn <T, Sz> & arr)
         {
         for (int number = 0; number < arr.sz; number++)
-            data [number] = arr [number];
+            data [number] = arr.data [number];
         }
     };
 
@@ -116,8 +116,9 @@ class array_t : public Type <T, Sz>
         return this->data [num];
         }
 
-    array_t (const array_t & arr)
-        Type ()
+    array_t (const array_t & arr) :
+        Type <T, Sz> ()
+        {}
     };
 
 //{///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
