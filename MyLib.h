@@ -163,7 +163,7 @@ const KEY KeyEndWork = VK_ESCAPE;
 ///////////////////////////////////////////////////////////ФУНКЦИИ////////////////////////////////////////////////////////////////////
 //}///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool     CreateMyWindow (vect_t window = Window, bool );
+bool     CreateMyWindow (vect_t window = Window, bool cursor = false);
 bool     Clear (COLORREF color = _BLACK);
 double   Dist (vect_t point1, vect_t point2);
 double   Dist (double x1, double x2, double y1, double y2);
@@ -188,14 +188,14 @@ double   LengthVect (vect_t vect);
 
 //
 
-bool CreateMyWindow (vect_t window, )
+bool CreateMyWindow (vect_t window, bool cursor)
     {
     _txWindowStyle &= ~ WS_CAPTION;
-    txTextCursor (false);
+    txTextCursor (cursor);
 
     txCreateWindow (window.x, window.y);
 
-    DEBUG printf ("Создано окно рисования с параметрами %lg, %lg", window.x, window.y);
+    DEBUG printf ("Создано окно рисования с параметрами %lg, %lg\n", window.x, window.y);
 
     return true;
     }

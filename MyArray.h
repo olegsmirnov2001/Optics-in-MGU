@@ -48,7 +48,9 @@ struct dyn
     dyn () :
         data (NULL),
         sz (0)
-        {}
+        {
+        DEBUG printf ("Создался объект типа dyn размера 0\n");
+        }
 
     dyn (int szNew) :
         data ((T*) new T [szNew]),
@@ -57,12 +59,13 @@ struct dyn
         for (int number = 0; number < sz; number++)
             data [number] = T ();
 
-        DEBUG printf ("\nСоздан массив dyn размера %d\n", sz);
+        DEBUG printf ("Создался объект типа dyn размера %d\n", sz);
         }
 
     ~dyn ()
         {
         delete (data);
+        DEBUG printf ("Удален объект типа dyn размера %d\n", sz);
         }
 
     dyn (const dyn <T, Sz> & arr)
@@ -92,6 +95,8 @@ struct dyn
         {
         for (int number = 0; number < arr.sz; number++)
             data [number] = arr.data [number];
+
+        sz = arr.sz;
         }
     };
 
@@ -111,7 +116,12 @@ class array_t : public Type <T, Sz>
     T& operator [] (int num)
         {
         if (((num < 0) || (num >= this->sz)))
-            AllGoneBad ("You made a mistake in array using");
+            {
+            char err [LengthText] = "";
+            sprintf (err, "You made an error in array using <0, %d, %d>", num, Type<T, Sz> :: sz);
+
+            AllGoneBad (err);
+            }
 
         return this->data [num];
         }
@@ -145,9 +155,9 @@ template <>
 template <typename T>
 class matrix_t <T, 0, 0> : public array_t <dyn, array_t <dyn, T> >
     {
-    int sz1, sz2;
-
     public:
+
+    int sz1, sz2;
 
     matrix_t (int Size1, int Size2) :
         array_t <dyn, array_t <dyn, T> > (),
@@ -161,10 +171,12 @@ class matrix_t <T, 0, 0> : public array_t <dyn, array_t <dyn, T> >
     };
 
 template <int Sz1, int Sz2>
-bool PrintfMatrix (matrix_t <int, Sz1, Sz2> matr)
+bool PrintfMatrix (matrix_t <int, Sz1, Sz2> & matr)
     {
-    for (int number1 = 0; number1 < Sz1; number1++)
-        for (int number2 = 0; number2 < Sz2; number2++, printf ("\n"))
+    DEBUG printf ("Распечатывается матрица размера %d %d\n", matr.sz1, matr.sz2);
+
+    for (int number1 = 0; number1 < matr.sz1; number1++, printf ("\n"))
+        for (int number2 = 0; number2 < matr.sz2; number2++)
             printf ("%d ", matr [number1][number2]);
 
     return true;
