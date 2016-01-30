@@ -139,6 +139,14 @@ class rect_t
         {}
     };
 
+class noncopiable
+    {
+    private:
+    
+    noncopiable (const noncopiable&);
+    const noncopiable& operator = (const noncopiable&);
+    };
+
 //{///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////КОНСТАНТЫ//////////////////////////////////////////////////////////////////
 //}///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,12 +199,11 @@ double   LengthVect (vect_t vect);
 bool CreateMyWindow (vect_t window, bool cursor)
     {
     _txWindowStyle &= ~ WS_CAPTION;
-    
     txTextCursor (cursor);
 
     txCreateWindow (window.x, window.y);
 
-    DEBUG printf ("Создано окно рисования с параметрами %lg, %lg", window.x, window.y);
+    DEBUG printf ("Создано окно рисования с параметрами %lg, %lg\n", window.x, window.y);
 
     return true;
     }

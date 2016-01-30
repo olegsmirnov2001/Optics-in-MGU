@@ -84,8 +84,7 @@ class button_t
         txSelectFont ("Comic Sans MS", (pos.y2 - pos.y1), (pos.y2 - pos.y1) * 2/5, FW_BOLD);
 
         DrawText (pos, name);
-        Clear (_GREEN);
-
+        
         return true;
         }
 
