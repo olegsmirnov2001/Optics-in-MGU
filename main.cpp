@@ -63,6 +63,7 @@ class pixel_t
 template <template <typename, int> class Type, int Sz>
 bool Main (array_t <Type, button_t, Sz> & buttons);
 bool DrawAreaDrawing ();
+bool ClearEdges ();
 
 //}
 
@@ -87,19 +88,29 @@ bool Main (array_t <Type, button_t, Sz> & buttons)
 
     scanf ("%d %d", &radiusMouse, &brightMouse);
 
+    bool keyPressed = false;
+    vect_t ()
+
     txBegin ();
 
     while (!Exit ())
         {
         DirectTXFlush ();
 
-        if ((txMouseButtons () % 2 == 1) && (Inside (AreaDrawing, txMousePos ())))
-            {
-            SetColors (MulColor (ColorDrawing, brightMouse / 256.0));
-            txCircle (txMousePos ().x, txMousePos ().y, radiusMouse);
-            }
+        //if ((txMouseButtons () % 2 == 1)/* && (Inside (AreaDrawing, txMousePos ()))*/)
+        //    {
+        //    SetColors (MulColor (ColorDrawing, brightMouse / 256.0));
+        //    txCircle (txMousePos ().x, txMousePos ().y, radiusMouse);
+        //    }
+
+        if ((keyPressed == false) && (txMouseButtons () % 2 == 1))
+            keyPressed = true;
+
+
 
         DirectTXFlushBack ();
+
+        ClearEdges ();
 
         //
 
@@ -121,6 +132,27 @@ bool DrawAreaDrawing ()
     {
     SetColors (5, _YELLOW, _NULL);
     DrawRect (AreaDrawing);
+
+    return true;
+    }
+
+bool ClearEdges ()
+    {
+    for (int xNow = 0; xNow < Window.x; xNow++)
+        {
+        for (int yNow = 0; yNow < AreaDrawing.y1; yNow++)
+            DirectTXPutPixel (xNow, yNow, _BLACK);
+        for (int yNow = AreaDrawing.y2; yNow <= Window.y; yNow++)
+            DirectTXPutPixel (xNow, yNow, _BLACK);
+        }
+
+    for (int yNow = AreaDrawing.y1; yNow < AreaDrawing.y2; yNow++)
+        {
+        for (int xNow = 0; xNow < AreaDrawing.x1; xNow++)
+            DirectTXPutPixel (xNow, yNow, _BLACK);
+        for (int xNow = AreaDrawing.x2; xNow < Window.x; xNow++)
+            DirectTXPutPixel (xNow, yNow, _BLACK);
+        }
 
     return true;
     }
