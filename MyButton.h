@@ -8,7 +8,7 @@ class button_t
 
     rect_t pos;
 
-    char* name;
+    char * name;
 
     COLORREF colorLine;
     COLORREF colorFill;
@@ -37,9 +37,9 @@ class button_t
         pushed (false)
         {}
 
-    button_t (rect_t Apos, char* Aname, COLORREF AcolorLine = _WHITE,
-                                        COLORREF AcolorFill = _WHITE,
-                                        COLORREF AcolorName = _BLACK, HDC Apicture = NULL, int Akey = 0) :
+    button_t (rect_t Apos, char * Aname, COLORREF AcolorLine = _WHITE,
+                                         COLORREF AcolorFill = _WHITE,
+                                         COLORREF AcolorName = _BLACK, HDC Apicture = NULL, int Akey = 0) :
         pos (Apos),
         name (Aname),
         colorLine (AcolorLine),
@@ -123,6 +123,8 @@ bool DoOperationsWithButtons (array_t <Type, button_t, Sz> & buttons)
         buttons [number].Check ();
         buttons [number].Draw ();
         }
+
+    return true;
     }
 
 

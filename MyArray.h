@@ -149,6 +149,8 @@ class matrix_t : public array_t <stt, array_t <stt, T, Sz2>, Sz1>
         {}
 
     matrix_t (int, int);
+
+    matrix_t (vect_t);
     };
 
 template <>
@@ -163,6 +165,16 @@ class matrix_t <T, 0, 0> : public array_t <dyn, array_t <dyn, T> >
         array_t <dyn, array_t <dyn, T> > (),
         sz1 (Size1),
         sz2 (Size2)
+        {
+        array_t <dyn, array_t <dyn, T> >::Move (sz1);
+        for (int number = 0; number < sz1; number++)
+            array_t <dyn, array_t <dyn, T> >::data[number].Move (sz2);
+        }
+
+    matrix_t (vect_t sz) :
+        array_t <dyn, array_t <dyn, T> > (),
+        sz1 (sz.x),
+        sz2 (sz.y)
         {
         array_t <dyn, array_t <dyn, T> >::Move (sz1);
         for (int number = 0; number < sz1; number++)
