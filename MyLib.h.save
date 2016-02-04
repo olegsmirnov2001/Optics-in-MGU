@@ -2,8 +2,6 @@
 /////////////////////////////////////////////////¡»¡À»Œ“≈ ¿ —Ã»–ÕŒ¬¿ ŒÀ≈√¿////////////////////////////////////////////////////////////
 //}///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define Including_Direct_TX 1
-
 #if (Including_Direct_TX)
 
 #include "DirectTX.cpp"
@@ -36,6 +34,7 @@ const double PI = M_PI;
 const int Nothing = -666;
 
 const bool Do_debug = false;
+const bool Including_Direct_TX = true;
 
 //{///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////// À¿——€////////////////////////////////////////////////////////////////////
@@ -327,27 +326,19 @@ bool DrawText (rect_t area, char text [])
 
 bool Exit (vect_t window)
     {
-    TX_LIB
-        {
-        const double sizeCross = 25;
-        const double thinknessCross = 3;
+    const double sizeCross = 25;
+    const double thinknessCross = 3;
 
-        SetColors (thinknessCross, _RED, _NULL);
-        rect_t cross (window.x - sizeCross - thinknessCross / 2,
-                                             thinknessCross / 2,
-                      window.x             - thinknessCross / 2,
-                                 sizeCross + thinknessCross / 2);
+    SetColors (thinknessCross, _RED, _NULL);
+    rect_t cross (window.x - sizeCross - thinknessCross / 2,
+                                         thinknessCross / 2,
+                  window.x             - thinknessCross / 2,
+                             sizeCross + thinknessCross / 2);
 
-        DrawRect (cross);
-        DrawDiag (cross);
+    DrawRect (cross);
+    DrawDiag (cross);
 
-        return (((Inside (cross, txMousePos ())) && (txMouseButtons () % 2 == 1)) || (GetAsyncKeyState (KeyEndWork)));
-        }
-
-    DIRECT_TX
-        {
-        return (GetAsyncKeyState (KeyEndWork));
-        }
+    return (((Inside (cross, txMousePos ())) && (txMouseButtons () % 2 == 1)) || (GetAsyncKeyState (KeyEndWork)));
     }
 
 bool AllGoneBad (char* text)

@@ -63,23 +63,12 @@ class pixel_t
 template <template <typename, int> class Type, int Sz>
 bool Main (array_t <Type, button_t, Sz> & buttons);
 bool DrawAreaDrawing ();
-bool GetMatrix (matrix_t <pixel_t> & window);
-bool PrintMatrix (matrix_t <pixel_t> & window);
 
 //}
 
 int main ()
     {
     CreateMyWindow ();
-
-    /*
-
-    int a = 0, b = 0;
-    scanf ("%d %d", &a, &b);
-    printf ("%d %d", a, b);
-    Sleep (10000);
-
-    */
 
     array_t <stt, button_t, 0> buttons;
     SetButtons (buttons);
@@ -98,11 +87,11 @@ bool Main (array_t <Type, button_t, Sz> & buttons)
 
     scanf ("%d %d", &radiusMouse, &brightMouse);
 
-    matrix_t <pixel_t> window (Window);
+    txBegin ();
 
     while (!Exit ())
         {
-        PrintMatrix (window);
+        DirectTXFlush ();
 
         if ((txMouseButtons () % 2 == 1) && (Inside (AreaDrawing, txMousePos ())))
             {
@@ -110,11 +99,7 @@ bool Main (array_t <Type, button_t, Sz> & buttons)
             txCircle (txMousePos ().x, txMousePos ().y, radiusMouse);
             }
 
-        GetMatrix (window);
-
-        printf ("%s\n", window [1][1].Print ());
-
-        txBegin ();
+        DirectTXFlushBack ();
 
         //
 
@@ -124,12 +109,10 @@ bool Main (array_t <Type, button_t, Sz> & buttons)
 
         //
 
-        txEnd ();
-
         txSleep (1);
-
-        Clear ();
         }
+
+    txEnd ();
 
     return true;
     }
@@ -142,7 +125,8 @@ bool DrawAreaDrawing ()
     return true;
     }
 
-bool GetMatrix (matrix_t <pixel_t> & window)
+/*
+bool GetPicture (matrix_t <pixel_t> & window)
     {
     for (int xNow = AreaDrawing.x1; xNow < AreaDrawing.x2; xNow++)
         for (int yNow = AreaDrawing.y1; yNow < AreaDrawing.y2; yNow++)
@@ -151,7 +135,7 @@ bool GetMatrix (matrix_t <pixel_t> & window)
     return true;
     }
 
-bool PrintMatrix (matrix_t <pixel_t> & window)
+bool PrintPicture (matrix_t <pixel_t> & window)
     {
     for (int xNow = AreaDrawing.x1; xNow < AreaDrawing.x2; xNow++)
         for (int yNow = AreaDrawing.y2; yNow < AreaDrawing.y2; yNow++)
@@ -159,7 +143,7 @@ bool PrintMatrix (matrix_t <pixel_t> & window)
 
     return true;
     }
-
+*/
 
 
 
