@@ -7,6 +7,8 @@ const COLORREF ColorDrawing = _RED;
 const int LengthSpace = 50;
 const rect_t AreaDrawing (LengthSpace, LengthSpace, Window.x - LengthSpace, Window.y - LengthSpace);
 
+const int BeginSizePreviousPushes = 256;
+
 //}
 
 //{ Classes: //
@@ -88,8 +90,8 @@ bool Main (array_t <Type, button_t, Sz> & buttons)
 
     scanf ("%d %d", &radiusMouse, &brightMouse);
 
-    bool keyPressed = false;
-    vect_t ()
+    int amountPreviousPushes = 0;
+    array_t <dyn, vect_t> previousPushes (BeginSizePreviousPushes);
 
     txBegin ();
 
@@ -97,16 +99,52 @@ bool Main (array_t <Type, button_t, Sz> & buttons)
         {
         DirectTXFlush ();
 
-        //if ((txMouseButtons () % 2 == 1)/* && (Inside (AreaDrawing, txMousePos ()))*/)
-        //    {
-        //    SetColors (MulColor (ColorDrawing, brightMouse / 256.0));
-        //    txCircle (txMousePos ().x, txMousePos ().y, radiusMouse);
-        //    }
+        if ((txMouseButtons () % 2 == 1) && (Inside (AreaDrawing, txMousePos ())))
+            {
+            amountPreviousPushes++;
+            if (amountPreviousPushes > previousPushes.sz)
+                previousPushes.Move (previousPushes.sz * 2);
 
-        if ((keyPressed == false) && (txMouseButtons () % 2 == 1))
-            keyPressed = true;
+            previousPushes [amountPreviousPushes - 1] = vect_t (txMousePos ());
+            }
+        else
+            {
+            if (amountPreviousPushes > 0)
+                {
+                if (amountPreviousPushes == 2)
+                    {
+                    DrawLine (previousPushes [0], previousPushes [1]);
+                    }
 
+                if (amountPreviousPushes >= 3)
+                    {
+                    DrawCatmullRom (previousPushes [amountPreviousPushes - 3], previousPushes [amountPreviousPushes - 2],
+                                    previousPushes [amountPreviousPushes - 1], previousPushes [amountPreviousPushes - 1],
+                                    radiusMouse, brightMouse, ColorDrawing);
+                    }
 
+                amountPreviousPushes = 0;
+                previousPushes.Move (BeginSizePreviousPushes);
+                }
+            }
+
+        if (amountPreviousPushes == 1)
+            {
+            SetColors (MulColor (ColorDrawing, brightMouse / 256.0));
+            txCircle (txMousePos ().x, txMousePos ().y, radiusMouse);
+            }
+
+        if (amountPreviousPushes == 3)
+            {
+            DrawCatmullRom (previousPushes [0], previousPushes [0], previousPushes [1], previousPushes [2],
+                            radiusMouse, brightMouse, ColorDrawing);
+            }
+
+        if (amountPreviousPushes >= 4)
+            {
+            array_t <stt, vect_t, 4> newPoints (previousPushes, amountPreviousPushes - 4);
+            DrawCatmullRom (newPoints, radiusMouse, brightMouse, ColorDrawing);
+            }
 
         DirectTXFlushBack ();
 
@@ -121,6 +159,9 @@ bool Main (array_t <Type, button_t, Sz> & buttons)
         //
 
         txSleep (1);
+
+        while (GetAsyncKeyState (VK_SPACE))
+            txSleep (10);
         }
 
     txEnd ();
@@ -136,7 +177,7 @@ bool DrawAreaDrawing ()
     return true;
     }
 
-bool ClearEdges ()
+bool ClearEdges ()  // это - адский костыль
     {
     for (int xNow = 0; xNow < Window.x; xNow++)
         {

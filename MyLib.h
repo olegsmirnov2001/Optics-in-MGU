@@ -15,7 +15,6 @@
 #endif
 
 #include "AllColors.h"
-#include "CutmullRom.h"
 
 //{///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////DEFINES/&/SOME/CONSTANTS/////////////////////////////////////////////////////////////
@@ -209,6 +208,7 @@ bool     DrawRect (rect_t rect);
 bool     DrawRect (double x1, double y1, double x2, double y2);
 bool     DrawDiag (rect_t rect);
 bool     DrawText (rect_t area, char* text);
+bool     DrawLine (vect_t point1, vect_t point2);
 bool     Exit (vect_t window = Window);
 bool     AllGoneBad (char* text);
 template <typename T>
@@ -237,18 +237,8 @@ bool CreateMyWindow (vect_t window, bool cursor)
 
 bool Clear (COLORREF color)
     {
-    TX_LIB
-        {
-        txSetFillColor (color);
-        txClear ();
-        }
-
-    DIRECT_TX
-        {
-        for (int xNow = 0; xNow < Window.x; xNow++)
-            for (int yNow = 0; yNow < Window.y; yNow++)
-                DirectTXPutPixel (xNow, yNow, _BLACK);
-        }
+    txSetFillColor (color);
+    txClear ();
 
     if (color == _RED)
         txSleep (127);
@@ -325,6 +315,11 @@ bool DrawText (rect_t area, char text [])
     sprintf (text, "%s", text);
 
     return txDrawText (area.x1, area.y1, area.x2, area.y2, text);
+    }
+
+bool DrawLine (vect_t point1, vect_t point2)
+    {
+    txLine (point1.x, point1.y, point2.x, point2.y);
     }
 
 bool Exit (vect_t window)
@@ -424,7 +419,7 @@ double LengthVect (vect_t vect)
     return sqrt (vect.x * vect.x + vect.y * vect.y);
     }
 
-void DirectTXFlush (unsigned char*)
+void FlushOut (unsigned char*)
     {
     Win32::SetDIBitsToDevice (txDC(), 0, 0,
                               DirectTXScreenBitmapInfo.bmiHeader.biWidth,
@@ -436,10 +431,13 @@ void DirectTXFlush (unsigned char*)
     DirectTXLastRenderMoment = GetTickCount();
     }
 
+//void FlushBack (unsigned char*)
+
 //
 
 #include "MyArray.h"
 #include "MyButton.h"
+#include "CutmullRom.h"
 
 /* предыдущая библиотека
 

@@ -126,9 +126,33 @@ class array_t : public Type <T, Sz>
         return this->data [num];
         }
 
+    const T& operator [] (int num) const
+        {
+        if (((num < 0) || (num >= this->sz)))
+            {
+            char err [LengthText] = "";
+            sprintf (err, "You made an error in array using <0, %d, %d>", num, Type<T, Sz> :: sz);
+
+            AllGoneBad (err);
+            }
+
+        return this->data [num];
+        }
+
     array_t (const array_t & arr) :
         Type <T, Sz> ()
         {}
+
+    template <template <typename, int> class Type2, int Sz2>
+    array_t (const array_t <Type2, T, Sz2> & arr, int dataBegin) : // Warning: possible to use only when the array is stative
+        Type <T, Sz> ()
+        {
+        if ((arr.sz < dataBegin + Sz) || (dataBegin < 0))
+            AllGoneBad ("You made an error in array copying");
+
+        for (int number = 0; number < Sz; number++)
+            this->data [number] = arr [number + dataBegin];
+        }
     };
 
 //{///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
