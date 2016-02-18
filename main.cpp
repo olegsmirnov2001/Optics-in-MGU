@@ -32,6 +32,8 @@ const int BeginRadiusMouse  = 5;
 const int BeginBrightMouse  = 250;
 const int BeginBrightInside = 0;
 
+const int BeginSizePreviousPushes = 256;
+
 //}
 
 //{ Classes: //
@@ -176,7 +178,12 @@ bool CreatingPicture (matrix_t <unsigned char> & picture)
     int amountPreviousPushes = 0;
     array_t <dyn, vect_t> previousPushes (BeginSizePreviousPushes);
 
+<<<<<<< HEAD
     //}
+=======
+    int amountPreviousPushes = 0;
+    array_t <dyn, vect_t> previousPushes (BeginSizePreviousPushes);
+>>>>>>> origin/master
 
     txBegin ();
 
@@ -184,6 +191,7 @@ bool CreatingPicture (matrix_t <unsigned char> & picture)
         {
         DEBUG printf ("Amounts: %d - %d\n", amountPreviousPushes, previousPushes.sz);
 
+<<<<<<< HEAD
         txBitBlt (txDC (), AreaDrawing.x1,  AreaDrawing.y1, AreaDrawing.x (), AreaDrawing.y (), bufferTerm, 0, 0);
 
         Drawing (tool, toolBefore, previousPushes, &amountPreviousPushes, radiusMouse, brightMouse, brightInside);
@@ -192,6 +200,54 @@ bool CreatingPicture (matrix_t <unsigned char> & picture)
                   txDC (), AreaDrawing.x1, AreaDrawing.y1);
 
         DrawBackground (background);
+=======
+        if ((txMouseButtons () % 2 == 1) && (Inside (AreaDrawing, txMousePos ())))
+            {
+            amountPreviousPushes++;
+            if (amountPreviousPushes > previousPushes.sz)
+                previousPushes.Move (previousPushes.sz * 2);
+
+            previousPushes [amountPreviousPushes - 1] = vect_t (txMousePos ());
+            }
+        else
+            {
+            if (amountPreviousPushes > 0)
+                {
+                if (amountPreviousPushes == 2)
+                    {
+                    DrawLine (previousPushes [0], previousPushes [1]);
+                    }
+
+                if (amountPreviousPushes >= 3)
+                    {
+                    DrawCatmullRom (previousPushes [amountPreviousPushes - 3], previousPushes [amountPreviousPushes - 2],
+                                    previousPushes [amountPreviousPushes - 1], previousPushes [amountPreviousPushes - 1],
+                                    radiusMouse, brightMouse, ColorDrawing);
+                    }
+
+                amountPreviousPushes = 0;
+                previousPushes.Move (BeginSizePreviousPushes);
+                }
+            }
+
+        if (amountPreviousPushes == 1)
+            {
+            SetColors (MulColor (ColorDrawing, brightMouse / 256.0));
+            txCircle (txMousePos ().x, txMousePos ().y, radiusMouse);
+            }
+
+        if (amountPreviousPushes == 3)
+            {
+            DrawCatmullRom (previousPushes [0], previousPushes [0], previousPushes [1], previousPushes [2],
+                            radiusMouse, brightMouse, ColorDrawing);
+            }
+
+        if (amountPreviousPushes >= 4)
+            {
+            array_t <stt, vect_t, 4> newPoints (previousPushes, amountPreviousPushes - 4);
+            DrawCatmullRom (newPoints, radiusMouse, brightMouse, ColorDrawing);
+            }
+>>>>>>> origin/master
 
         Flush (txDC(), bufferPerm, AreaDrawing);
 
@@ -353,6 +409,7 @@ bool DrawAreaDrawing ()
     return true;
     }
 
+<<<<<<< HEAD
 bool LoadBuffer (buffer_t * buffer)
     {
     FILE* f = fopen ("Resourses\\Save point.txt", "r");
@@ -457,6 +514,8 @@ bool DrawResult (matrix_t <unsigned char> & result)
 
 /* ј это - костыли.  огда € начинал писать этот код, € исользовал их и еще ~100 таких же.
 
+=======
+>>>>>>> origin/master
 bool ClearEdges ()  // это - адский костыль
     {
     for (int xNow = 0; xNow < Window.x; xNow++)

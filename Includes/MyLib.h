@@ -272,8 +272,11 @@ bool     DrawRect (double x1, double y1, double x2, double y2);
 bool     DrawDiag (rect_t rect);
 bool     DrawText (rect_t area, char* text);
 bool     DrawLine (vect_t point1, vect_t point2);
+<<<<<<< HEAD:Includes/MyLib.h
 bool     DrawLine (vect_t point1, POINT point2);
 bool     DrawEllipse (vect_t point1, vect_t point2, int thinkness = 2);
+=======
+>>>>>>> origin/master:MyLib.h
 bool     Exit (vect_t window = Window);
 bool     AllGoneBad (char* text);
 template <typename T>
@@ -303,6 +306,7 @@ bool CreateMyWindow (vect_t window, bool cursor)
 
 vect_t GetWindowSize ()
     {
+<<<<<<< HEAD:Includes/MyLib.h
     vect_t window (GetSystemMetrics (SM_CXSCREEN), GetSystemMetrics (SM_CYSCREEN));
 
     if (window.x > MaxWindowSize.x)
@@ -316,6 +320,8 @@ vect_t GetWindowSize ()
 
 bool Clear (COLORREF color)
     {
+=======
+>>>>>>> origin/master:MyLib.h
     txSetFillColor (color);
     txClear ();
 
@@ -416,6 +422,7 @@ bool DrawText (rect_t area, char text [])
 bool DrawLine (vect_t point1, vect_t point2)
     {
     txLine (point1.x, point1.y, point2.x, point2.y);
+<<<<<<< HEAD:Includes/MyLib.h
 
     return true;
     }
@@ -452,6 +459,8 @@ bool DrawEllipse (vect_t point1, vect_t point2, int thinkness)
     txEllipse (point1.x, point1.y, point2.x, point2.y);
 
     return true;
+=======
+>>>>>>> origin/master:MyLib.h
     }
 
 bool Exit (vect_t window)
@@ -551,7 +560,11 @@ double LengthVect (vect_t vect)
     return sqrt (vect.x * vect.x + vect.y * vect.y);
     }
 
+<<<<<<< HEAD:Includes/MyLib.h
 char* PrintColor (COLORREF color)
+=======
+void FlushOut (unsigned char*)
+>>>>>>> origin/master:MyLib.h
     {
     static char text [LengthText];
 
@@ -577,14 +590,19 @@ bool DeleteSymbols (char * text, int length, char symbol)
     return true;
     }
 
+//void FlushBack (unsigned char*)
+
 //
 
 #include "MyArray.h"
 #include "MyPictures.h"
 #include "MyButton.h"
 #include "CutmullRom.h"
+<<<<<<< HEAD:Includes/MyLib.h
 #include "MyDirectTX.h"
 #include "Generating.h"
+=======
+>>>>>>> origin/master:MyLib.h
 
 /* предыдущая библиотека
 
